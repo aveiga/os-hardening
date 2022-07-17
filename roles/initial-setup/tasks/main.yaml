@@ -6,4 +6,6 @@
     dest: "/etc/modprobe.d/squashfs.conf"
 
 - name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabledd
-  ansible.builtin.shell: "modprobe -r squashfs"
+  community.general.modprobe:
+    name: "squashfs"
+    state: "absent"
