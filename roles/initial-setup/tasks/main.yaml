@@ -1,11 +1,137 @@
 ---
-- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabled
+- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabled (config)
   become: true
   ansible.builtin.copy:
     src: "../files/squashfs.conf"
     dest: "/etc/modprobe.d/squashfs.conf"
 
-- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabledd
+- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabled (disable squashfs)
+  become: true
   community.general.modprobe:
     name: "squashfs"
     state: "absent"
+  ignore_errors: true
+
+- name: 1.1.1.2 Ensure mounting of udf filesystems is disabled (config)
+  become: true
+  ansible.builtin.copy:
+    src: "../files/udf.conf"
+    dest: "/etc/modprobe.d/udf.conf"
+
+- name: 1.1.1.2 Ensure mounting of udf filesystems is disabled (disable udf)
+  become: true
+  community.general.modprobe:
+    name: "udf"
+    state: "absent"
+  ignore_errors: true
+
+- name: 1.1.1.3 Ensure mounting of FAT filesystems is limited (config)
+  become: true
+  ansible.builtin.copy:
+    src: "../files/fat.conf"
+    dest: "/etc/modprobe.d/fat.conf"
+
+- name: 1.1.1.3 Ensure mounting of FAT filesystems is limited (disable fat)
+  become: true
+  community.general.modprobe:
+    name: "fat"
+    state: "absent"
+  ignore_errors: true
+
+- name: 1.1.1.3 Ensure mounting of FAT filesystems is limited (disable vfat)
+  become: true
+  community.general.modprobe:
+    name: "vfat"
+    state: "absent"
+  ignore_errors: true
+
+- name: 1.1.1.3 Ensure mounting of FAT filesystems is limited (disable msdos)
+  become: true
+  community.general.modprobe:
+    name: "msdos"
+    state: "absent"
+  ignore_errors: true
+
+- name: 1.1.2, 1.1.3, 1.1.4, 1.1.5 Ensure /tmp is configured (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /tmp tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0"
+
+- name: 1.1.2, 1.1.3, 1.1.4, 1.1.5 Ensure /tmp is configured (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /tmp"
+
+- name: 1.1.6, 1.1.7, 1.1.8, 1.1.9 Ensure /dev/shm is configured (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid 0 0"
+
+- name: 1.1.6, 1.1.7, 1.1.8, 1.1.9 Ensure /dev/shm is configured (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /dev/shm"
+
+- name: 1.1.10 Ensure separate partition exists for /var (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /var tmpfs defaults,noexec,nodev,nosuid 0 0"
+
+- name: 1.1.10 Ensure separate partition exists for /var (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /var"
+
+- name: 1.1.11, 1.1.12, 1.1.13, 1.1.14 Ensure separate partition exists for /var/tmp (dir)
+  ansible.builtin.file:
+    path: "/var/tmp"
+    state: directory
+
+- name: 1.1.11, 1.1.12, 1.1.13, 1.1.14 Ensure separate partition exists for /var/tmp (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /var/tmp tmpfs defaults,noexec,nodev,nosuid 0 0"
+
+- name: 1.1.11, 1.1.12, 1.1.13, 1.1.14 Ensure separate partition exists for /var/tmp (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /var/tmp"
+
+- name: 1.1.15 Ensure separate partition exists for /var/log (dir)
+  ansible.builtin.file:
+    path: "/var/log"
+    state: directory
+
+- name: 1.1.15 Ensure separate partition exists for /var/log (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /var/log tmpfs defaults,noexec,nodev,nosuid 0 0"
+
+- name: 1.1.15 Ensure separate partition exists for /var/log (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /var/log"
+
+- name: 1.1.16 Ensure separate partition exists for /var/log/audit (dir)
+  ansible.builtin.file:
+    path: "/var/log/audit"
+    state: directory
+
+- name: 1.1.16 Ensure separate partition exists for /var/log/audit (config)
+  become: true
+  ansible.builtin.lineinfile:
+    path: "/etc/fstab"
+    line: "tmpfs /var/log/audit tmpfs defaults,noexec,nodev,nosuid 0 0"
+
+- name: 1.1.16 Ensure separate partition exists for /var/log/audit (mount)
+  become: true
+  ansible.builtin.shell: "mount -o noexec,nodev,nosuid /var/log/audit"
+# - name: 1.1.17, 1.1.18 Ensure separate partition exists for /home (config)
+#   become: true
+#   ansible.builtin.lineinfile:
+#     path: "/etc/fstab"
+#     line: "tmpfs /home tmpfs defaults,nodev 0 0"
+
+# - name: 1.1.17, 1.1.18 Ensure separate partition exists for /home (mount)
+#   become: true
+#   ansible.builtin.shell: "mount -o nodev /home"
