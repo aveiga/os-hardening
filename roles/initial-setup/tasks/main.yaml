@@ -1,0 +1,9 @@
+---
+- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabled
+  become: true
+  ansible.builtin.copy:
+    src: "../files/squashfs.conf"
+    dest: "/etc/modprobe.d/squashfs.conf"
+
+- name: 1.1.1.1 Ensure mounting of squashfs filesystems is disabledd
+  ansible.builtin.shell: "modprobe -r squashfs"

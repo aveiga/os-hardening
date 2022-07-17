@@ -1,0 +1,5 @@
+---
+- name: Harden Operating System
+  hosts: all
+  roles:
+    - initial-setup

@@ -1,0 +1,26 @@
+---
+first_master:
+  hosts:
+    master01:
+      ansible_host: 74.220.22.65
+      ansible_user: ubuntu
+other_masters:
+  hosts:
+    # master02:
+    #   ansible_host: 192.168.1.156
+    #   ansible_user: aveiga
+    # master03:
+    #   ansible_host: 192.168.1.157
+    #   ansible_user: aveiga
+
+workers:
+  hosts:
+#     worker01:
+#       ansible_host: 192.168.1.158
+#       ansible_user: aveiga
+#     worker02:
+#       ansible_host: 192.168.1.159
+#       ansible_user: aveiga
+#     worker03:
+#       ansible_host: 192.168.1.160
+#       ansible_user: aveiga
